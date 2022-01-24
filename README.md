@@ -1,6 +1,6 @@
 # Case-oppgave
 ## Beskrivelse
-Dette er en web-applikasjon for å visualisere data fra Statistisk Sentralbyrå sitt API.
+Dette er en web-applikasjon laget med React og ApexCharts for å visualisere data fra Statistisk Sentralbyrå sitt API.
 ___
 
 ### Begrensninger
