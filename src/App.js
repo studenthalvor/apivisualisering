@@ -133,19 +133,19 @@ function grafConfig(kategorier, akseverdier) {
   return graf;
 }
 
+
 function App() {
-  // States for data til graf
+  // States for API-kall for data til graf
   let [kategorier, setKategorier] = useState();
   let [akseverdier, setAkseverdier] = useState();
   // Hvilken graf som skal vises. Utgående som default.
   let [utgaaende, setUtgaaende] = useState(false);
-
   let [tittel, setTittel] = useState();
+  // State for data/konfigurasjon til graf
   let [chartOptions, setChartOptions] = useState();
 
   useEffect(() => {
     // Api-kall som blir kjørt når man velger "utgående" eller "inngående" graf via grønn og rød knapp.
-
     getNaeringskategorier().then(setKategorier);
     getYakseverdier(utgaaende).then(setAkseverdier);
     setTittel("Betalingstrømmer mellom Norge og utlandet i millioner kr, etter kvartal, " + (utgaaende ? "inngående verdi " : "utgående verdi ") + "og næring");
