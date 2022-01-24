@@ -1,0 +1,64 @@
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  background-color: #2e2e2e;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: rgb(0, 0, 0);
+  height: 100%;
+}
+
+header {
+  height: 100%;
+  width: 95%;
+  color: white;
+}
+
+#panel {
+  display: flex;
+  flex-direction: column;
+}
+
+#knappewrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+}
+
+
+button {
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  font-size: 16px;
+  margin: 10px;
+}
+
+#knapp-inn {
+  background-color: #407940;
+}
+
+#knapp-ut {
+  background-color: #a74545;
+}
+
+#knapp-inn:hover {
+  background-color: #62c862;
+}
+
+#knapp-ut:hover {
+  background-color: #da6969;
+}
+
+#loading {
+  color: white;
+}
