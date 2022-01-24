@@ -3,20 +3,15 @@ import { useEffect } from 'react';
 import { useState } from 'react/cjs/react.development';
 import './App.css';
 
-/* 
-- Dropdown for å stille stroke
-- Mulighet for å dele opp i årstall
-- Knapper for å kunne velge graftype
- */
 
-
+// API-kall for å hente kategorier til graf
 function getNaeringskategorier() {
   return fetch('https://data.ssb.no/api/v0/no/table/08785/ ', { method: 'GET' })
     .then(response => response.json());
-  // kna data
-  // slå sammen kvartal, velge år av gangen, velge nye charts
+
 }
 
+// API-kall med query for å hente datapunkter. "utgaaende"-argumentet endrer API-spørringen på "inngående" eller "utgående".
 function getYakseverdier(utgaaende) {
   const query = {
     "query": [
@@ -71,6 +66,7 @@ function getYakseverdier(utgaaende) {
     .then(response => response.json());
 }
 
+// Funksjon for å konfigurere graf.
 function grafConfig(kategorier, akseverdier) {
   let graf = {
     options: {
@@ -86,13 +82,13 @@ function grafConfig(kategorier, akseverdier) {
   };
 
 
-  // Setter kategorier til x-aksen. Kvartal og årstall. 
+  // Setter kategorier til x-aksen. Kvartal og årstall.
   const kvartal = kategorier['variables'][3]['values'];
   for (const key in kvartal) {
     graf.options.xaxis.categories[key] = kvartal[key].substring(0, 4) + "-" + kvartal[key].substring(4, 6);
   }
 
-  // Setter serier. (Næringer).
+  // Setter serier(Næringer).
   const naeringer = kategorier['variables'][1]['valueTexts'];
   for (const key in naeringer) {
     graf.series.push({
@@ -112,7 +108,7 @@ function grafConfig(kategorier, akseverdier) {
     y++;
   }
 
-  // Styler grafene
+  // Styler grafene med farge og fontstørrelse
   graf['options']['xaxis']['labels'] = {
     style: {
       colors: '#b3b3b3',
@@ -138,30 +134,35 @@ function grafConfig(kategorier, akseverdier) {
 }
 
 function App() {
+  // States for data til graf
   let [kategorier, setKategorier] = useState();
   let [akseverdier, setAkseverdier] = useState();
+  // Hvilken graf som skal vises. Utgående som default.
   let [utgaaende, setUtgaaende] = useState(false);
+
   let [tittel, setTittel] = useState();
+  let [chartOptions, setChartOptions] = useState();
 
   useEffect(() => {
+    // Api-kall som blir kjørt når man velger "utgående" eller "inngående" graf via grønn og rød knapp.
+
     getNaeringskategorier().then(setKategorier);
     getYakseverdier(utgaaende).then(setAkseverdier);
     setTittel("Betalingstrømmer mellom Norge og utlandet i millioner kr, etter kvartal, " + (utgaaende ? "inngående verdi " : "utgående verdi ") + "og næring");
   }, [utgaaende]);
 
-  let [chartOptions, setChartOptions] = useState();
 
+  // Hook som setter grafkonfigurasjon så fort API-kallet er returnert
   useEffect(() => {
     if (kategorier === undefined || akseverdier === undefined) {
       return;
     }
-    // Beregner data til graf og presenterer.
+    // Beregner data til graf via funksjonen grafConfig() og setter state 
     const grafCfg = grafConfig(kategorier, akseverdier);
     setChartOptions(grafCfg);
-
   }, [kategorier, akseverdier]);
 
-
+  // Sjekk på om graf har fått konfigurasjon
   if (chartOptions === undefined) {
     return <div id="loading">Loading...</div>;
   }
